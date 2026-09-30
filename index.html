@@ -586,7 +586,7 @@ input[type="text"], input[type="number"], select {
   --painel3: rgba(15, 22, 19, .82); --linha3: rgba(200, 161, 90, .35); }
 html, body { height: 100%; margin: 0; background: var(--bg3); overflow: hidden; }
 body { color: var(--fg3); font-family: var(--sans); }
-#cena { position: fixed; inset: 0; display: block; touch-action: none; z-index: 0; }
+#cena { position: fixed; inset: 0; width: 100% !important; height: 100% !important; display: block; touch-action: none; z-index: 0; }
 #hud { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 #hud > * { pointer-events: auto; }
 #dica { pointer-events: none; position: fixed; z-index: 5; padding: .35rem .55rem; font-size: .74rem; background: #26241F; color: var(--fg3);
@@ -737,6 +737,65 @@ body { color: var(--fg3); font-family: var(--sans); }
 .lista-sala .vaga b { color: var(--mut3); font-weight: 500; }
 .lista-sala .vaga .pino { opacity: .45; }
 .op:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ---------- celular: abas, barra de peças, folhas ---------- */
+.abas, .barra-pecas, .folha { display: none; }
+@media (max-width: 820px) {
+  .hud-camera, .hud-caixas, .hud-log, .hud-crit, .hud-botoes, .hud-baixo .passar { display: none !important; }
+  .hud-topo { gap: 8px; padding: calc(6px + env(safe-area-inset-top, 0px)) 10px 6px; }
+  .hud-topo .marca3d { font-size: .9rem; }
+  .hud-ano, .hud-fase { font-size: .7rem; }
+  .hud-baixo { bottom: calc(56px + env(safe-area-inset-bottom, 0px)); padding: 6px 10px; }
+  .hud-vez { font-size: .76rem; padding: .4rem .6rem; }
+  .abas { display: flex; position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; background: var(--painel3); border-top: 1px solid var(--linha3);
+    padding: 4px 4px calc(4px + env(safe-area-inset-bottom, 0px)); backdrop-filter: blur(6px); }
+  .abas button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font: 600 .62rem var(--sans); color: var(--mut3); background: none; border: 0; border-radius: 6px; padding: .35rem 0; }
+  .abas button i { font-style: normal; font-size: 1.15rem; line-height: 1; }
+  .abas button[aria-pressed="true"] { color: var(--ouro3); background: rgba(200,161,90,.12); }
+  .barra-pecas { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; position: absolute; left: 8px; right: 8px; bottom: calc(62px + env(safe-area-inset-bottom, 0px)); z-index: 3;
+    background: var(--painel3); border: 1px solid var(--linha3); border-radius: 8px; padding: .5rem; }
+  .barra-pecas .rot { flex-basis: 100%; font-size: .7rem; color: var(--mut3); }
+  .barra-pecas button { display: flex; align-items: center; gap: .4rem; font: 600 .78rem var(--sans); color: var(--fg3); background: rgba(255,255,255,.06); border: 1px solid var(--linha3); border-radius: 6px; padding: .6rem .8rem; min-height: 44px; }
+  .barra-pecas button i { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font: 700 .7rem var(--sans); font-style: normal; color: #fff; }
+  .barra-pecas button[aria-pressed="true"] { background: var(--verde3); border-color: var(--ouro3); }
+  .barra-pecas .passar { margin-left: auto; background: transparent; }
+  .hud-baixo { bottom: calc(130px + env(safe-area-inset-bottom, 0px)); }
+  .folha { display: flex; position: absolute; inset: 0; z-index: 6; align-items: flex-end; background: rgba(15,22,19,.55); }
+  .folha-caixa { width: 100%; max-height: 88%; overflow: auto; background: #131C18; border-top: 1px solid var(--linha3); border-radius: 14px 14px 0 0;
+    padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: .5rem; color: var(--fg3); }
+  .folha-caixa h3 { margin: 0 0 .3rem; font: 700 1rem var(--serif); }
+  .sala-item { display: flex; flex-direction: column; align-items: flex-start; gap: .15rem; text-align: left; font: 600 .92rem var(--sans); color: var(--fg3);
+    background: rgba(255,255,255,.05); border: 1px solid var(--linha3); border-radius: 8px; padding: .7rem .9rem; min-height: 52px; }
+  .sala-item small { font-weight: 400; font-size: .72rem; color: var(--mut3); }
+  .sala-item--nao { opacity: .5; }
+  .sala-item:not(:disabled):active { background: var(--verde3); }
+  .folha .fantasma, .menu-botoes button { font: 600 .82rem var(--sans); color: var(--fg3); background: rgba(255,255,255,.06); border: 1px solid var(--linha3); border-radius: 8px; padding: .7rem; min-height: 44px; }
+  .menu-botoes { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .lista-crit { margin: 0; padding: 0 0 0 1rem; font-size: .78rem; color: var(--mut3); }
+  .lista-crit b { color: var(--fg3); }
+  .folha .nota { font-size: .74rem; color: var(--mut3); margin: 0; }
+  /* painéis 2D viram folhas inteiras */
+  .flutuante--rivais, .flutuante--fechamento { left: 0; right: 0; top: auto; bottom: calc(56px + env(safe-area-inset-bottom, 0px)); width: 100%; transform: none; max-height: 78%; border-radius: 14px 14px 0 0; }
+  .rivais-camera { display: flex; gap: .4rem; flex-wrap: wrap; padding: .6rem; background: var(--papel); }
+  .rivais-camera button { font: 600 .74rem var(--sans); padding: .55rem .7rem; border: 1px solid var(--linha); border-radius: 6px; background: #fff; color: var(--tinta); }
+  .veu { align-items: flex-end; padding: 0; }
+  .veu .modal { width: 100%; max-width: none; max-height: 92%; border-radius: 14px 14px 0 0; margin: 0; }
+  .veu .modal .btn { min-height: 44px; }
+  .pauta3d { padding: 60px 0 calc(70px + env(safe-area-inset-bottom, 0px)); align-items: flex-start; }
+  .pauta-cartas { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding: 0 12vw; -webkit-overflow-scrolling: touch; }
+  .pauta-carta { flex: 0 0 76vw; width: 76vw; scroll-snap-align: center; }
+  .pauta-carta:hover { transform: none; }
+  .pauta-sub { font-size: .86rem; padding: 0 12px; }
+  .pauta-nota { padding: 0 12px; }
+  .lupa-caixa img { width: min(360px, 78vw); }
+  .aviso3d { bottom: calc(190px + env(safe-area-inset-bottom, 0px)); width: calc(100% - 24px); }
+  .seletor { left: 8px !important; right: 8px; top: auto !important; bottom: calc(130px + env(safe-area-inset-bottom, 0px)); width: auto; }
+}
+
+@media (max-width: 820px) {
+  body.folha-aberta .barra-pecas, body.folha-aberta .hud-baixo { display: none !important; }
+  .flutuante--rivais { max-height: 70%; }
+}
 
 </style>
 </head>
@@ -7248,7 +7307,8 @@ const CENA3D = (() => {
       // concluídos: pilha no 4º encaixe
       if (j.vencidos.length) {
         const g = new THREE.Group();
-        j.vencidos.forEach((id, k) => { const c = carta(S.TEX.cartas[id] || S.TEX.verso, 0, 0, k * 0.06, 0, id); c.rotation.y = (Math.random() - 0.5) * 0.04; g.add(c); });
+        // concluído fica virado para baixo, como na regra: a pilha mostra só o verso
+        j.vencidos.forEach((id, k) => { const c = carta(S.TEX.verso, 0, 0, k * 0.06, 0, id); c.rotation.y = (Math.random() - 0.5) * 0.04; g.add(c); });
         g.position.set(ENC[3] / 10 - 15, 0.5, -10 + 1.2 - 4.4); J.dinamico.add(g);
       }
       // clientes, com o cubinho no nível
@@ -7341,7 +7401,7 @@ const CENA3D = (() => {
       }
       // a pilha dele de concluídos e a pasta, ao lado do tabuleiro (lado oposto ao jogador)
       const g = new THREE.Group();
-      (s.herdeiro.concluidos || []).forEach((id, k) => { const c = carta(S.TEX.cartas[id] || S.TEX.verso, 0, 0, k * 0.06, 0, id); g.add(c); });
+      (s.herdeiro.concluidos || []).forEach((id, k) => { const c = carta(S.TEX.verso, 0, 0, k * 0.06, 0, id); g.add(c); });
       g.position.set(-34, 0.35, -28); g.rotation.y = Math.PI; S.cena.add(g); S.herdeiroDiscos.push(g);
       const pasta = new THREE.Group();
       (s.herdeiro.pasta || []).forEach((id, k) => { const c = carta(S.TEX.cartas[id] || S.TEX.verso, k * 7, 0, 0, 0, id); pasta.add(c); });
@@ -7385,6 +7445,21 @@ const CENA3D = (() => {
   function irPara(v) {
     S.transicao = { de: { ...S.orb, alvo: S.orb.alvo.clone() }, ate: { ...v, alvo: new THREE.Vector3(...v.alvo) }, t: 0, dur: 0.9 };
   }
+  /** Uma vista que enquadra um retângulo do tampo (cm) na tela atual — é o que o celular usa. */
+  function enquadrar(cx, cz, larg, alt, az, el, folga = 1.15) {
+    const cam = S.camera; const vfov = cam.fov * Math.PI / 180; const aspect = cam.aspect || 1;
+    const hfov = 2 * Math.atan(Math.tan(vfov / 2) * aspect);
+    const deLado = Math.abs(Math.sin(az)) > 0.5;
+    const w = deLado ? alt : larg, d = deLado ? larg : alt;
+    const distW = (w / 2) / Math.tan(hfov / 2);
+    const distH = ((d / 2) * Math.sin(el)) / Math.tan(vfov / 2) + (d / 2) * Math.cos(el);
+    return { alvo: [cx, 0, cz], dist: Math.min(S.orb.max, Math.max(S.orb.min, Math.max(distW, distH) * folga)), az, el };
+  }
+  function definirCelular(ligado) {
+    S.celular = !!ligado;
+    const k = S.celular ? 1.7 : 1;
+    for (const e of S.espacos) e.scale.set(k, k, 1);   // alvo de toque maior (a arte não muda)
+  }
   /** Coloca a câmera no assento de um jogador (mesa inteira vista de lá). */
   function sentarEm(jogadorId) {
     const J = S.jog[jogadorId]; if (!J) return;
@@ -7421,7 +7496,8 @@ const CENA3D = (() => {
       const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
       const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2, cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
       if (pinca) orb.dist = Math.min(orb.max, Math.max(orb.min, orb.dist * pinca / d));
-      if (doisDedos) { orb.az -= (cx - doisDedos.x) * 0.006; orb.el = Math.min(1.45, Math.max(0.15, orb.el + (cy - doisDedos.y) * 0.005)); }
+      // no celular a mesa não gira com os dedos: só desloca e aproxima (girar sem querer era o erro mais comum)
+      if (doisDedos && !S.celular) { orb.az -= (cx - doisDedos.x) * 0.006; orb.el = Math.min(1.45, Math.max(0.15, orb.el + (cy - doisDedos.y) * 0.005)); }
       pinca = d; doisDedos = { x: cx, y: cy }; arrastando = null; S.transicao = null;
     }, { passive: true });
     canvas.addEventListener('touchend', () => { doisDedos = null; pinca = null; }, { passive: true });
@@ -7489,6 +7565,9 @@ const CENA3D = (() => {
     ouvir(nome, fn) { S.ouvintes[nome] = fn; },
     definirPrazo(fn) { S.prazoDe = fn; },
     definirMeuIdx(i) { S.meuIdx = i || 0; },
+    definirCelular, enquadrar,
+    mesaDe: (id) => S.jog && S.jog[id] ? { x: S.jog[id].x, z: S.jog[id].z, rot: S.jog[id].rot } : null,
+    azAtual: () => S.azAtual || 0,
     orb: () => S.orb,
     _S: S, _espaco: espaco,
   };
@@ -7702,6 +7781,9 @@ const APP3D = (() => {
   /** Online, eu sou um assento fixo; no hot-seat, eu sou quem está na vez. */
   const possoAgir = (s) => !REDE.online() || atorDe(s) === REDE.meuJogadorId();
   const meuJogador = (s) => REDE.online() ? jogadorPorId(s, REDE.meuJogadorId()) : (atorDe(s) ? jogadorPorId(s, atorDe(s)) : null);
+  /** Tela pequena: outra interface por cima da mesma cena (abas, barra de peças, folhas). */
+  const CEL = () => matchMedia('(max-width: 820px)').matches;
+  const EFEITO_SALA = { biblioteca: 'conhecimento', recepcao: 'captar cliente ($3) ou cavar ($6)', forum: 'concluir processos', reuniao: 'contratar / promover', cafezinho: 'energia (+3) e clientes' };
 
   /* -------------------------------------------------------------- cenário (setup) */
   function telaCenario() {
@@ -7943,7 +8025,8 @@ const APP3D = (() => {
       : j.bot ? `${j.nome} está jogando…`
       : (REDE.online() && !possoAgir(s)) ? `Vez de ${j.nome}. Aguarde…`
       : s.fase === 'escritorio' && !s.pendente
-        ? (s.acaoExtra ? `${j.nome}: a última ação do titular — clique num espaço livre.` : `${j.nome}: clique num espaço dourado para mandar uma peça, ou passe o ano. Arraste para deslocar a mesa; botão direito gira.`)
+        ? (CEL() ? (s.acaoExtra ? `${j.nome}: última ação do titular — toque no Titular e escolha a sala.` : `${j.nome}: toque numa peça embaixo e escolha a sala.`)
+          : (s.acaoExtra ? `${j.nome}: a última ação do titular — clique num espaço livre.` : `${j.nome}: clique num espaço dourado para mandar uma peça, ou passe o ano. Arraste para deslocar a mesa; botão direito gira.`))
       : s.fase === 'pauta' ? `${j.nome}: escolha uma carta da pauta.` : '';
     const caixas = h('div', { class: 'hud-caixas' }, ...s.jogadores.map((jj) => h('span', {
       class: 'caixa' + (jj.id === ator ? ' caixa--vez' : ''), title: `${jj.nome}: $${jj.dinheiro} em caixa` + (jj.divida ? `, deve $${jj.divida}` : '') + ` · ${jj.energia} de energia · conhecimento ${jj.conhecimento}`,
@@ -7957,6 +8040,80 @@ const APP3D = (() => {
       h('div', { class: 'hud-log' }, ...ultimos.map((t) => h('div', { texto: t }))));
 
     return [topo, camera, caixas, baixo];
+  }
+
+  /* -------------------------------------------------------------- celular: abas, barra de peças e folha de salas */
+  function vistaCelular(s, aba) {
+    const az = CENA3D.azAtual();
+    // o alvo desce um pouco no tampo para o objeto subir na tela e não ficar sob as barras de baixo
+    if (aba === 'tab') return CENA3D.enquadrar(-12 * Math.sin(az), -2 + 12 * Math.cos(az), 60, 40, az, 1.25, 1.04);
+    const eu = meuJogador(s); const m = eu && CENA3D.mesaDe(eu.id);
+    if (m) return CENA3D.enquadrar(m.x + 5 * Math.sin(m.rot), m.z + 5 * Math.cos(m.rot), 30, 22, m.rot, 1.2, 1.04);
+    return CENA3D.enquadrar(0, 0, 60, 40, az, 1.25);
+  }
+  function irParaAba(s, aba) {
+    store.vista.aba = aba;
+    if (aba === 'tab' || aba === 'minha') { store.vista.rivaisAbertos = false; store.vista.menuAberto = false; CENA3D.irPara(vistaCelular(s, aba)); }
+    if (aba === 'rivais') { store.vista.rivaisAbertos = true; store.vista.menuAberto = false; }
+    if (aba === 'menu') { store.vista.menuAberto = true; store.vista.rivaisAbertos = false; }
+    store.notificar();
+  }
+  function abasCelular(s) {
+    const v = store.vista; const aba = v.aba || 'tab';
+    const item = (id, rotulo, icone) => h('button', { type: 'button', 'aria-pressed': String(aba === id), onclick: () => irParaAba(s, id) }, h('i', { texto: icone }), rotulo);
+    return h('nav', { class: 'abas' }, item('tab', 'Tabuleiro', '▦'), item('minha', 'Minha mesa', '▤'), item('rivais', 'Rivais', '☷'), item('menu', 'Menu', '≡'));
+  }
+  function barraDePecas(s) {
+    if (s.fase !== 'escritorio' || s.pendente || !possoAgir(s)) return null;
+    const ator = atorDe(s); const j = ator && jogadorPorId(s, ator); if (!j || j.bot) return null;
+    const livres = pecasLivres(j);
+    const vistos = {}; const opcoes = [];
+    for (const p of livres) { if (!vistos[p.tipo]) { vistos[p.tipo] = true; opcoes.push(p); } }
+    const sel = store.vista.pecaSelecionada;
+    return h('div', { class: 'barra-pecas' },
+      h('span', { class: 'rot', texto: s.acaoExtra ? 'Última ação do titular' : 'Sua vez — toque numa peça:' }),
+      ...opcoes.map((p) => h('button', { type: 'button', 'aria-pressed': String(sel === p.id),
+        onclick: () => store.atualizarVista({ pecaSelecionada: sel === p.id ? null : p.id, folhaSalas: sel === p.id ? false : true }) },
+        h('i', { estilo: { background: j.cor.hex }, texto: p.tipo === 'titular' ? 'T' : p.tipo === 'advogado' ? 'A' : 'E' }), NOME_PECA[p.tipo])),
+      !s.acaoExtra ? h('button', { type: 'button', class: 'passar', onclick: () => store.despachar(ac.passar(j.id)) }, 'Passar') : null);
+  }
+  /** A folha com as cinco salas: toque numa sala e a peça vai — sem mirar no círculo. */
+  function folhaDeSalas(s) {
+    const pecaId = store.vista.pecaSelecionada; if (!pecaId || !store.vista.folhaSalas) return null;
+    const ator = atorDe(s); const j = ator && jogadorPorId(s, ator); if (!j) return null;
+    const p = j.pecas.find((x) => x.id === pecaId); if (!p) return null;
+    const fechar = () => store.atualizarVista({ folhaSalas: false });
+    return h('div', { class: 'folha', onclick: (ev) => { if (ev.target.classList.contains('folha')) fechar(); } },
+      h('div', { class: 'folha-caixa' },
+        h('h3', { texto: `${NOME_PECA[p.tipo]} vai para…` }),
+        ...Object.keys(s.salas).map((salaId) => {
+          const sala = s.salas[salaId]; const r = podeAlocar(s, j, pecaId, salaId);
+          const livres = sala.espacos - sala.ocupantes.length;
+          const inutil = r.ok && !salaUtil(s, j, salaId);
+          return h('button', { type: 'button', class: 'sala-item' + (r.ok ? '' : ' sala-item--nao'), disabled: !r.ok,
+            onclick: () => { store.vista.pecaSelecionada = null; store.vista.folhaSalas = false; store.despachar(ac.alocar(j.id, pecaId, salaId)); } },
+            h('b', { texto: CENA3D.NOME_SALA[salaId] }),
+            h('small', { texto: r.ok ? `${livres} livre${livres === 1 ? '' : 's'} · ${EFEITO_SALA[salaId]}` + (inutil ? ' · ⚠ não rende nada agora' : '') : r.motivo }));
+        }),
+        h('button', { type: 'button', class: 'fantasma', onclick: fechar }, 'Cancelar')));
+  }
+  function menuCelular(s) {
+    const v = store.vista;
+    const fechar = () => store.atualizarVista({ menuAberto: false, aba: v.abaAnterior || 'tab' });
+    const crit = s.criteriosOcultos && s.fase !== 'fim'
+      ? h('p', { class: 'nota', texto: 'Critérios do sócio virados (Critério Oculto).' })
+      : h('ul', { class: 'lista-crit' }, ...s.criterios.map((id) => h('li', null, h('b', { texto: CATALOGO.criterioPorId[id].nome }), ' — ', CATALOGO.criterioPorId[id].descricao)));
+    return h('div', { class: 'folha', onclick: (ev) => { if (ev.target.classList.contains('folha')) fechar(); } },
+      h('div', { class: 'folha-caixa' },
+        h('h3', { texto: `Ano ${s.rodada} de ${s.config.rodadas} · ${s.acaoExtra ? NOME_FASE.acaoExtra : (NOME_FASE[s.fase] || s.fase)}` + (REDE.online() ? ` · sala ${REDE.codigo()}` : '') }),
+        crit,
+        h('div', { class: 'menu-botoes' },
+          (REDE.souConvidado() ? possoAgir(s) : store.podeDesfazer()) ? h('button', { type: 'button', onclick: () => { REDE.souConvidado() ? REDE.pedirDesfazer() : store.desfazer(); fechar(); } }, '↶ Desfazer') : null,
+          h('button', { type: 'button', onclick: () => store.atualizarVista({ logAberto: !v.logAberto, menuAberto: false }) }, 'Log da partida'),
+          h('button', { type: 'button', onclick: () => store.atualizarVista({ modal: 'ajuda', menuAberto: false }) }, 'Regras'),
+          h('button', { type: 'button', onclick: () => store.atualizarVista({ confirmarNova: true, menuAberto: false }) }, 'Nova partida')),
+        h('p', { class: 'nota', texto: 'Um dedo desloca a mesa, dois dedos aproximam. Toque numa carta apoiada para vê-la grande.' }),
+        h('button', { type: 'button', class: 'fantasma', onclick: fechar }, 'Fechar')));
   }
 
   /* -------------------------------------------------------------- a Pauta: as cartas reais, grandes, no meio da tela */
@@ -8018,6 +8175,13 @@ const APP3D = (() => {
     const ator = atorDe(s); const j = ator && jogadorPorId(s, ator);
     if (!j || j.bot || dados.ocupado) return;
     const salaId = dados.salaId;
+    const sel = store.vista.pecaSelecionada;
+    if (sel && j.pecas.find((x) => x.id === sel)) {
+      const r = podeAlocar(s, j, sel, salaId);
+      if (r.ok) { store.vista.pecaSelecionada = null; store.vista.folhaSalas = false; store.despachar(ac.alocar(j.id, sel, salaId)); }
+      else store.atualizarVista({ erro: r.motivo });
+      return;
+    }
     const livres = pecasLivres(j);
     const porTipo = {};
     for (const p of livres) {
@@ -8052,8 +8216,10 @@ const APP3D = (() => {
     const ator = atorDe(s); const j = ator && jogadorPorId(s, ator);
     if (!j || j.bot) { CENA3D.realcar(null); return; }
     const legais = new Set();
+    const sel = store.vista.pecaSelecionada;
+    const pecas = sel ? pecasLivres(j).filter((p) => p.id === sel) : pecasLivres(j);
     for (const salaId of Object.keys(s.salas)) {
-      for (const p of pecasLivres(j)) { if (podeAlocar(s, j, p.id, salaId).ok) { legais.add(salaId); break; } }
+      for (const p of pecas) { if (podeAlocar(s, j, p.id, salaId).ok) { legais.add(salaId); break; } }
     }
     CENA3D.realcar(legais);
   }
@@ -8126,10 +8292,31 @@ const APP3D = (() => {
     }
 
     checarPassagem(s);
+    const cel = CEL();
+    CENA3D.definirCelular(cel);
+    document.body.classList.toggle('celular', cel);
+    document.body.classList.toggle('folha-aberta', cel && !!(v.rivaisAbertos || v.menuAberto || v.folhaSalas));
+    if (cel) {
+      // na minha vez do Escritório a câmera vai para o tabuleiro; a peça selecionada some quando a vez passa
+      const ator = atorDe(s);
+      if (!possoAgir(s) || s.fase !== 'escritorio') { v.pecaSelecionada = null; v.folhaSalas = false; }
+      const chaveVez = ator + ':' + s.fase + ':' + s.rodada;
+      if (possoAgir(s) && ator && !ehBot(s, ator) && s.fase === 'escritorio' && v.ultimaVezVista !== chaveVez) {
+        v.ultimaVezVista = chaveVez; v.aba = 'tab'; v.rivaisAbertos = false; v.menuAberto = false; CENA3D.irPara(vistaCelular(s, 'tab'));
+      }
+    }
     raiz.appendChild(h('div', { class: 'hud' }, ...hud(s)));
+    if (cel) {
+      raiz.appendChild(abasCelular(s));
+      const bp = barraDePecas(s); if (bp) raiz.appendChild(bp);
+      const fs = folhaDeSalas(s); if (fs) raiz.appendChild(fs);
+      if (v.menuAberto) raiz.appendChild(menuCelular(s));
+    }
     if (s.fase === 'pauta' && s.draft) { const pd = pauta3d(s); if (pd) raiz.appendChild(pd); }
     if (s.fase === 'fechamento' && s.fechamento) raiz.appendChild(h('div', { class: 'flutuante flutuante--fechamento' }, painelFechamento(s)));
-    if (v.rivaisAbertos) raiz.appendChild(h('div', { class: 'flutuante flutuante--rivais' }, renderRivais(s)));
+    if (v.rivaisAbertos) raiz.appendChild(h('div', { class: 'flutuante flutuante--rivais' }, renderRivais(s),
+      cel ? h('div', { class: 'rivais-camera' }, ...s.jogadores.filter((jj) => !(meuJogador(s) && jj.id === meuJogador(s).id)).map((jj) => h('button', { type: 'button',
+        onclick: () => { const m = CENA3D.mesaDe(jj.id); store.vista.rivaisAbertos = false; store.vista.aba = null; if (m) CENA3D.irPara(CENA3D.enquadrar(m.x, m.z, 30, 22, m.rot, 1.2)); store.notificar(); } }, 'Ver mesa · ' + jj.nome))) : null));
     if (v.logAberto) raiz.appendChild(painelLog(s));
     const sel = seletorDePeca(s); if (sel) raiz.appendChild(sel);
     if (v.lupa) raiz.appendChild(lupa(s, v.lupa));
@@ -8228,6 +8415,7 @@ const APP3D = (() => {
     });
     cenaPronta = true;
     ligarRede();
+    let tRedim = null; addEventListener('resize', () => { clearTimeout(tRedim); tRedim = setTimeout(() => { if (store.estado) { store.vista.ultimaVezVista = null; store.notificar(); } }, 250); });
     store.inscrever(renderizar);
     ligarTeclado();
     renderizar();
