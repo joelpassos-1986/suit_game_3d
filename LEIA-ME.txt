@@ -1,0 +1,14 @@
+SUIT 3D — site estático para a Vercel
+
+Como publicar:
+  1. Entre em https://vercel.com/new e arraste esta pasta inteira (ou rode `npx vercel` dentro dela).
+  2. Não escolha framework nenhum ("Other"). Sem build, sem package.json.
+  3. Em ~1 minuto o jogo estará em https://<nome>.vercel.app
+
+O que tem aqui:
+  index.html   — o jogo (motor v9 + cena 3D), gerado por suitdig/build3d.py
+  js/three.min.js — Three.js r128, servido pelo próprio site
+  tex/         — tabuleiro, mesa, verso e as 114 cartas
+  vercel.json  — cache de um ano para as imagens (a segunda partida abre na hora)
+
+Para atualizar: rode `python3 build3d.py` na pasta suitdig e suba esta pasta de novo.
