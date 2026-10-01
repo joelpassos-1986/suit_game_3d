@@ -395,6 +395,20 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; margin: 0; }
   max-width: min(58rem, 96vw); max-height: 92vh; overflow: auto; width: 100%;
 }
 .modal--estreito { max-width: 30rem; }
+.placar--comp th.comp-rot { text-align: left; font-weight: 500; white-space: nowrap; padding-right: 1rem; }
+.placar--comp .comp-secao th { text-align: left; font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--neutro); padding-top: .8rem; border-bottom: 1px solid rgba(0,0,0,.1); }
+.placar--comp td.comp-melhor { background: rgba(201,162,39,.2); font-weight: 700; }
+.placar--comp .comp-det { display: block; font-size: .62rem; color: var(--neutro); font-weight: 400; white-space: normal; }
+.placar--comp thead .comp-det { text-align: right; text-transform: none; letter-spacing: 0; margin-top: 2px; }
+.placar--comp tr.comp-total th, .placar--comp tr.comp-total td { font-size: 1.05rem; font-weight: 700; border-top: 2px solid rgba(0,0,0,.2); }
+.modal--largo { max-width: min(78rem, 97vw); }
+.agencia-grade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, 26rem); gap: 1rem; align-items: start; }
+.minha-mesa { border-left: 1px solid rgba(0,0,0,.12); padding-left: 1rem; }
+.minha-mesa h4 { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--neutro); margin: 0 0 .45rem; }
+.minha-mesa .mercado { margin-bottom: .8rem; }
+.minha-mesa .combina { outline: 3px solid #C9A227; outline-offset: 2px; border-radius: 6px; }
+.minha-mesa .vazio { font-size: .78rem; color: var(--neutro); }
+@media (max-width: 760px) { .agencia-grade { grid-template-columns: 1fr; } .minha-mesa { border-left: 0; padding-left: 0; border-top: 1px solid rgba(0,0,0,.12); padding-top: .8rem; } }
 .modal > header {
   padding: .7rem 1rem; background: var(--tinta); color: var(--fundo);
   border-radius: 10px 10px 0 0; display: flex; align-items: center; gap: .6rem;
@@ -641,6 +655,15 @@ body { color: var(--fg3); font-family: var(--sans); }
 .crit { font-size: .66rem; padding: .18rem .45rem; border-radius: 3px; background: rgba(90,58,46,.85); color: #F1E3D0; border: 1px solid rgba(200,161,90,.5); }
 .crit--oculto { background: rgba(30,30,30,.8); min-width: 1.6rem; text-align: center; }
 .crit--vi { background: rgba(31,92,70,.9); }
+.crit { position: relative; cursor: help; }
+.crit-carta { display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); z-index: 50;
+  width: 16rem; padding: .9rem 1rem 1rem; border-radius: 10px; text-align: left; cursor: default;
+  background: linear-gradient(160deg, #2B211A, #17120E); border: 2px solid #C8A15A; box-shadow: 0 14px 40px rgba(0,0,0,.55); }
+.crit:hover .crit-carta, .crit:focus .crit-carta, .crit:focus-within .crit-carta, .crit.aberto .crit-carta { display: block; }
+.crit-carta small { display: block; font-size: .6rem; letter-spacing: .14em; text-transform: uppercase; color: #C8A15A; margin-bottom: .4rem; }
+.crit-carta b { display: block; font-family: var(--serif); font-size: 1.15rem; color: #F1E3D0; margin-bottom: .5rem; }
+.crit-carta p { margin: 0; font-size: .86rem; line-height: 1.4; color: #E9DCC8; }
+.crit-carta em { display: block; margin-top: .6rem; font-size: .68rem; font-style: normal; color: #B9A88E; }
 .hud-botoes, .hud-camera { display: flex; gap: 6px; flex-wrap: wrap; }
 .hud-botoes { margin-left: auto; }
 .hud button, .hud-camera button, .aviso3d button, .seletor button { font: 600 .72rem/1 var(--sans); letter-spacing: .03em; color: var(--fg3); background: var(--painel3);
@@ -697,6 +720,16 @@ body { color: var(--fg3); font-family: var(--sans); }
 .pauta-carta img { width: 100%; border-radius: 10px; box-shadow: 0 14px 40px rgba(0,0,0,.6); border: 2px solid transparent; display: block; }
 .pauta-carta:hover, .pauta-carta:focus-visible { transform: translateY(-8px) scale(1.03); outline: none; }
 .pauta-carta:hover img, .pauta-carta:focus-visible img { border-color: var(--ouro3); }
+.pauta-mesa { width: fit-content; display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; margin: 0 auto 1rem; padding: .7rem .9rem; max-width: 1000px;
+  background: rgba(15,22,19,.78); border: 1px solid var(--linha3); border-radius: 8px; }
+.pauta-mesa h4 { font: 700 .62rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--ouro3); margin: 0 0 .45rem; text-align: left; }
+.pauta-mesa .fila { display: flex; gap: 8px; flex-wrap: wrap; }
+.pauta-mesa img { width: clamp(70px, 8vw, 110px); border-radius: 6px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,.5); cursor: zoom-in; }
+.pauta-mesa .vazio { font-size: .75rem; color: var(--mut3); }
+.pauta-mesa .nv { display: block; font-size: .6rem; color: var(--mut3); text-align: center; margin-top: 2px; }
+.pauta-selo { font: 600 .68rem var(--sans); padding: .3rem .6rem; border-radius: 4px; background: #C9A227; color: #1B1409; }
+.pauta-selo--neutro { background: rgba(255,255,255,.12); color: var(--fg3); }
+.pauta-carta.combina img { border-color: #C9A227; box-shadow: 0 0 0 3px rgba(201,162,39,.45), 0 14px 40px rgba(0,0,0,.6); }
 .pauta-carta span { font: 600 .74rem var(--sans); color: var(--fg3); background: var(--verde3); padding: .45rem .9rem; border-radius: 4px; }
 .pauta-nota { color: var(--mut3); font-size: .74rem; margin: 1rem 0 0; }
 /* ---------- a lupa */
@@ -4941,6 +4974,14 @@ const store = {
     try {
       const ator = atorDe(antes);
       const novo = reducer(antes, acao);
+      // Relógio de cada jogador: o tempo desde o lance anterior vai para quem fez este lance.
+      // Um lance sozinho conta no máximo 10 minutos (aba esquecida aberta não vira "tempo de jogo").
+      const agora = Date.now();
+      novo.tempos = { ...((antes && antes.tempos) || {}) };
+      if (antes && ator && this.marcoTempo) {
+        novo.tempos[ator] = (novo.tempos[ator] || 0) + Math.min(agora - this.marcoTempo, 10 * 60 * 1000);
+      }
+      this.marcoTempo = agora;
       if (antes) {
         this.historico.push({ snap: JSON.stringify(antes), ator, rodada: antes.rodada });
         if (this.historico.length > LIMITE_HISTORICO) this.historico.shift();
@@ -5010,6 +5051,7 @@ const store = {
     const salvo = this.lerSalvo();
     if (!salvo || !salvo.estado) return false;
     this.estado = salvo.estado;
+    this.marcoTempo = Date.now();
     this.historico = [];
     this.ultimoAtor = null;
     this.vista.modal = null;
@@ -5380,7 +5422,7 @@ const mudar = (campos) => store.atualizarVista({ escolha: { ...escolha(), ...cam
 
 function moldura(titulo, subtitulo, corpo, rodape, estreito = false) {
   return h('div', { class: 'veu', role: 'dialog', 'aria-modal': 'true' },
-    h('div', { class: 'modal' + (estreito ? ' modal--estreito' : '') },
+    h('div', { class: 'modal' + (estreito === 'largo' ? ' modal--largo' : estreito ? ' modal--estreito' : '') },
       h('header', null,
         h('h3', { texto: titulo }),
         subtitulo ? h('span', { class: 'sub', texto: subtitulo }) : null),
@@ -5404,6 +5446,34 @@ function botaoDesfazer(texto) {
  * Não há botão de desfazer: o preço é declarado antes de olhar, e voltar atrás
  * depois de ver as cinco cartas transformaria a regra em outra coisa.
  */
+/**
+ * Na Agência o jogador escolhe cliente olhando a própria mesa: quais processos
+ * estão abertos (e de que área) e quais clientes já tem. A área do cliente
+ * selecionado acende nos processos que ele vai baratear.
+ */
+function painelMinhaMesa(s, j, clienteSel) {
+  const area = clienteSel ? cliente(clienteSel).area : null;
+  const temArea = new Set(j.clientes.map((c) => cliente(c.cartaId).area));
+  return h('aside', { class: 'minha-mesa' },
+    h('h4', { texto: `Seus processos ativos (${j.carteira.length})` }),
+    j.carteira.length
+      ? h('div', { class: 'mercado' }, ...j.carteira.map(({ cartaId, cubos }) => {
+        const pc = processo(cartaId);
+        const el = cartaProcesso(cartaId, { cubos,
+          energiaEfetiva: temArea.has(pc.area) ? Math.max(0, pc.energia - 1) : null });
+        return h('div', { class: area && pc.area === area ? 'combina' : '',
+          title: area && pc.area === area ? `Combina com o cliente escolhido (${area}): −1 de energia` : null }, el);
+      }))
+      : h('p', { class: 'vazio', texto: 'Nenhum processo aberto na sua mesa.' }),
+    area ? h('p', { class: 'dica', texto: j.carteira.some(({ cartaId }) => processo(cartaId).area === area)
+      ? `Em destaque: processos de ${area} que o cliente escolhido barateia.`
+      : `Nenhum processo seu é de ${area} agora.` }) : null,
+    h('h4', { texto: `Seus clientes (${j.clientes.length} de ${s.config.limite_clientes})` }),
+    j.clientes.length
+      ? h('div', { class: 'mercado' }, ...j.clientes.map((c) => cartaCliente(c.cartaId, c.nivel)))
+      : h('p', { class: 'vazio', texto: 'Nenhum cliente ainda.' }));
+}
+
 function modalCavada(s, j) {
   const mao = s.pendente.mao;
   const sel = escolha().cliente && mao.includes(escolha().cliente) ? escolha().cliente : null;
@@ -5413,7 +5483,7 @@ function modalCavada(s, j) {
   const paraOMercado = trocar && cabe ? sobra.slice(0, s.mercadoClientes.length) : null;
 
   return moldura('Agência de marketing · a cavada', `${j.nome} · já pagou ${dinheiro(s.config.custo_cavar_cliente)}`,
-    h('div', null,
+    h('div', { class: 'agencia-grade' }, h('div', null,
       h('p', { class: 'dica', texto: `Estas são as ${mao.length} do topo. Fique com 1 — ela entra `
         + `no nível ${s.config.cliente_entra_no_nivel}. As outras voltam para o fundo do baralho.` }),
       h('div', { class: 'mercado' }, ...mao.map((id) => cartaCliente(id, 3, {
@@ -5432,12 +5502,13 @@ function modalCavada(s, j) {
         h('p', { class: 'dica', texto: 'Vão para o mercado:' }),
         h('div', { class: 'mercado' },
           ...paraOMercado.map((id) => cartaCliente(id, 3, {})))) : null),
+      painelMinhaMesa(s, j, sel)),
     h('div', { class: 'linha-flex' },
       h('span', { class: 'esquerda', texto: `Você terá ${j.clientes.length + (sel ? 1 : 0)} de ${s.config.limite_clientes} clientes.` }),
       h('button', {
         class: 'btn', type: 'button', disabled: !sel,
         onclick: () => store.despachar(ac.recepcaoCavarFicar(sel, paraOMercado)),
-      }, sel ? `Ficar com ${cliente(sel).nome}` : 'Escolha uma carta')));
+      }, sel ? `Ficar com ${cliente(sel).nome}` : 'Escolha uma carta')), 'largo');
 }
 
 function modalRecepcao(s, j) {
@@ -5455,7 +5526,7 @@ function modalRecepcao(s, j) {
 
   return moldura('Agência de marketing',
     `${j.nome} · pegar ${dinheiro(custo)} · cavar ${dinheiro(s.config.custo_cavar_cliente)}`,
-    h('div', null,
+    h('div', { class: 'agencia-grade' }, h('div', null,
       h('p', { class: 'dica', texto: `Pague ${dinheiro(custo)} à agência e leve 1 dos clientes abertos. `
         + 'Ele entra no nível 3, fatura já no Fechamento deste ano e desconta 1 de energia '
         + 'nos processos da área dele.' }),
@@ -5474,6 +5545,7 @@ function modalRecepcao(s, j) {
           + (jaTemDaArea ? ' (você já tinha um dessa área: o desconto não acumula)' : ''),
           positivo: !jaTemDaArea },
       ]) : null),
+      painelMinhaMesa(s, j, sel)),
     h('div', { class: 'linha-flex' },
       h('span', { class: 'esquerda', texto: `Você terá ${j.clientes.length + (sel ? 1 : 0)} de ${s.config.limite_clientes} clientes.` }),
       botaoDesfazer('↶ Desfazer a ida à Agência'),
@@ -5488,7 +5560,7 @@ function modalRecepcao(s, j) {
       h('button', {
         class: 'btn', type: 'button', disabled: !sel,
         onclick: () => store.despachar(ac.recepcaoEscolher(sel)),
-      }, sel ? `Pagar ${dinheiro(custo)} e assinar com ${escolhido.nome}` : 'Escolha um cliente')));
+      }, sel ? `Pagar ${dinheiro(custo)} e assinar com ${escolhido.nome}` : 'Escolha um cliente')), 'largo');
 }
 
 /* ------------------------------------------------------------------ *
@@ -6823,42 +6895,44 @@ function telaPlacar(s) {
   const buscar = (id) => (id === ID_HERDEIRO ? herdeiroComoJogador(s)
     : s.jogadores.find((x) => x.id === id));
 
-  const linhas = [];
-  for (const ficha of p.classificacao) {
-    const j = buscar(ficha.jogadorId);
-    const nivelBot = (s.config && s.config.bot_nivel === 'facil') ? 'bot fácil' : 'bot normal';
-    linhas.push(h('tr', { class: ficha.desqualificado ? 'desq' : '' },
-      h('td', null, h('span', { class: 'linha-flex' }, pino(j), h('b', { texto: ficha.nome }),
-        j.bot ? h('span', { class: 'etiqueta etiqueta--bot', texto: nivelBot }) : null,
-        ficha.ehHerdeiro ? h('span', { class: 'etiqueta', texto: 'automa' }) : null)),
-      h('td', { class: 'n num', texto: String(ficha.rep.EST) }),
-      h('td', { class: 'n num', texto: String(ficha.rep.CAP) }),
-      h('td', { class: 'n num', texto: String(ficha.rep.ATU) }),
-      h('td', { class: 'n num', texto: String(ficha.rep.LID) }),
-      h('td', { class: 'n num', texto: String(ficha.rep.REL) }),
-      h('td', { class: 'n num', texto: String(ficha.menor) }),
-      h('td', { class: 'n num', texto: String(j.conduta) }),
-      h('td', { class: 'n total num', texto: String(ficha.total) }),
-      h('td', null, h('button', {
-        class: 'btn btn--fantasma', type: 'button',
-        estilo: { padding: '.15rem .4rem', fontSize: '.7rem' },
-        onclick: () => store.atualizarVista({
-          detalhePlacar: aberto === ficha.jogadorId ? null : ficha.jogadorId,
-        }),
-      }, aberto === ficha.jogadorId ? 'ocultar' : 'conferir'))));
-
-    if (aberto === ficha.jogadorId) {
-      for (const l of ficha.linhas) {
-        const nome = l.chave.startsWith('criterio:')
-          ? CATALOGO.criterioPorId[l.id].nome : l.rotulo;
-        linhas.push(h('tr', { class: 'detalhe-linha' },
-          h('td', { colspan: '7', texto: `${nome} — ${l.detalhe}` }),
-          h('td', null),
-          h('td', { class: 'n num', texto: (l.pontos >= 0 ? '+' : '') + l.pontos }),
-          h('td', null)));
-      }
-    }
-  }
+  // Placar comparativo: uma coluna por jogador, uma linha por item — lado a lado.
+  const fichas = p.classificacao;
+  const jogs = fichas.map((f) => buscar(f.jogadorId));
+  const tempos = s.tempos || {};
+  const fmtTempo = (ms) => { if (!ms) return '—'; const t = Math.round(ms / 1000); const hh = Math.floor(t / 3600), mm = Math.floor((t % 3600) / 60), ss = t % 60;
+    return hh ? `${hh}h ${String(mm).padStart(2, '0')}min` : `${mm}min ${String(ss).padStart(2, '0')}s`; };
+  const nomeLinha = (l) => (l.chave.startsWith('criterio:') ? CATALOGO.criterioPorId[l.id].nome : l.rotulo);
+  const chaves = [];
+  for (const f of fichas) for (const l of f.linhas) if (!chaves.some((c) => c.chave === l.chave)) chaves.push({ chave: l.chave, nome: nomeLinha(l) });
+  // melhor = 'max' | 'min' | null  → destaca a melhor célula da linha
+  const linhaComp = (rotulo, valores, { melhor = 'max', fmt = (v) => String(v), detalhes = null, classe = '' } = {}) => {
+    const nums = valores.filter((v) => typeof v === 'number');
+    const alvo = melhor && nums.length > 1 && new Set(nums).size > 1 ? (melhor === 'max' ? Math.max(...nums) : Math.min(...nums)) : null;
+    return h('tr', { class: classe },
+      h('th', { scope: 'row', class: 'comp-rot', texto: rotulo }),
+      ...valores.map((v, i) => h('td', { class: 'n num' + (alvo !== null && v === alvo ? ' comp-melhor' : '') },
+        v === null || v === undefined ? '—' : fmt(v),
+        detalhes && detalhes[i] ? h('small', { class: 'comp-det', texto: detalhes[i] }) : null)));
+  };
+  const secao = (t) => h('tr', { class: 'comp-secao' }, h('th', { colspan: String(fichas.length + 1), texto: t }));
+  const pts = (v) => (v > 0 ? '+' : '') + v;
+  const linhas = [
+    secao('Reputação (casas em cada frente)'),
+    ...FRENTES.map((f) => linhaComp(FRENTE_INFO[f].nome, fichas.map((fi) => fi.rep[f]))),
+    linhaComp('Frente mais fraca', fichas.map((fi) => fi.menor)),
+    secao('Como os pontos foram feitos'),
+    ...chaves.map((c) => {
+      const ls = fichas.map((fi) => fi.linhas.find((l) => l.chave === c.chave));
+      return linhaComp(c.nome, ls.map((l) => (l ? l.pontos : null)), { fmt: pts, detalhes: ls.map((l) => (l ? l.detalhe : '')) });
+    }),
+    linhaComp('TOTAL', fichas.map((fi) => fi.total), { classe: 'comp-total' }),
+    secao('A partida de cada um'),
+    linhaComp('Processos concluídos', jogs.map((j) => (j.vencidos || []).length)),
+    linhaComp('Clientes no fim', jogs.map((j) => (j.clientes || []).length)),
+    linhaComp('Caixa final', jogs.map((j) => j.dinheiro || 0), { fmt: (v) => '$' + v }),
+    linhaComp('Fichas de Conduta', jogs.map((j) => j.conduta || 0), { melhor: 'min' }),
+    linhaComp('Tempo de jogo', jogs.map((j) => (tempos[j.id] ? tempos[j.id] : null)), { melhor: null, fmt: fmtTempo }),
+  ];
 
   const campeao = p.classificacao[0];
   return h('div', { class: 'tela' },
@@ -6887,7 +6961,9 @@ function telaPlacar(s) {
               texto: (s.config && s.config.bot_nivel === 'facil') ? 'bot fácil' : 'bot normal' })
             : null,
           h('div', { estilo: { fontSize: '.72rem', color: 'var(--neutro)' },
-            texto: `${ficha.total} pts · frente mais fraca ${ficha.menor}` }));
+            texto: `${ficha.total} pts · frente mais fraca ${ficha.menor}` }),
+          h('div', { estilo: { fontSize: '.72rem', color: 'var(--neutro)' },
+            texto: `⏱ ${fmtTempo(tempos[ficha.jogadorId])} de jogo` }));
       })),
 
       h('section', { class: 'painel' },
@@ -6897,15 +6973,14 @@ function telaPlacar(s) {
               ? 'Σ min(frente, mais fraca + 3) + critérios + caixa/5 − conduta − dívida'
               : 'Σ frentes + 3 × mais fraca + critérios + caixa/5 − conduta − dívida' })),
         h('div', { class: 'corpo', estilo: { overflowX: 'auto' } },
-          h('table', { class: 'placar' },
+          h('table', { class: 'placar placar--comp' },
             h('thead', null, h('tr', null,
-              h('th', { texto: 'Jogador' }),
-              ...FRENTES.map((f) => h('th', { class: 'n', title: FRENTE_INFO[f].nome, texto: f })),
-              h('th', { class: 'n', texto: 'Mín' }),
-              h('th', { class: 'n', texto: 'Cond' }),
-              h('th', { class: 'n', texto: 'Total' }),
-              h('th', null))),
-            h('tbody', null, ...linhas)))),
+              h('th', null),
+              ...fichas.map((fi, i) => h('th', { class: 'n' },
+                h('span', { class: 'linha-flex', estilo: { justifyContent: 'flex-end' } }, pino(jogs[i]), h('b', { texto: `${fi.posicao}º ${fi.nome}` })),
+                h('small', { class: 'comp-det', texto: `⏱ ${fmtTempo(tempos[fi.jogadorId])}` }))))),
+            h('tbody', null, ...linhas)),
+          h('p', { class: 'dica', estilo: { marginTop: '.5rem' }, texto: 'Em destaque, quem foi melhor em cada linha. O tempo de jogo soma quanto cada um levou para decidir os próprios lances (um lance conta no máximo 10 minutos).' }))),
 
       h('section', { class: 'painel' },
         h('header', null, h('h3', { texto: 'Critérios desta partida' })),
@@ -6976,7 +7051,7 @@ const CENA3D = (() => {
   // onde os cubos sentam nas cartas (fração da largura/altura, medido na arte)
   const PRAZO_U = { 2: [0.438, 0.542], 3: [0.386, 0.49, 0.594] };
   const PRAZO_V = 0.921;
-  const NIVEL_V = { 3: 0.427, 2: 0.561, 1: 0.694 };
+  const NIVEL_V = { 3: 0.39, 2: 0.53, 1: 0.665 };   // centro dos selos 3/2/1 na arte da carta
   const NIVEL_U = 0.213;
   const ALT_CUBO = 0.8;   // a casa da mesa é rebaixada: o cubo assenta na camada de baixo
 
@@ -7747,12 +7822,18 @@ const REDE = (() => {
   function receberDoConvidado(conn, m) {
     if (!m || typeof m !== 'object') return;
     if (m.t === 'oi') {
-      S.convidados[conn.id] = { nome: String(m.nome || 'Convidado').slice(0, 14), jogadorId: null, conn };
+      S.convidados[conn.id] = { nome: nomeUnico(String(m.nome || '').trim().slice(0, 14) || 'Convidado'), jogadorId: null, conn };
       emitir('sala'); enviarSala(); return;
     }
     const c = S.convidados[conn.id]; if (!c) return;
     if (m.t === 'acao' && m.acao && c.jogadorId) emitir('acao', c.jogadorId, m.acao);
     if (m.t === 'desfazer' && c.jogadorId) emitir('desfazer', c.jogadorId);
+  }
+  /** Dois jogadores com o mesmo nome confundem a mesa: o repetido ganha um número. */
+  function nomeUnico(nome) {
+    const usados = [S.nome, ...Object.values(S.convidados).map((c) => c.nome)].map((x) => String(x || '').toLowerCase());
+    if (!usados.includes(nome.toLowerCase())) return nome;
+    for (let k = 2; ; k++) { const cand = nome.slice(0, 11) + ' ' + k; if (!usados.includes(cand.toLowerCase())) return cand; }
   }
   const listaSala = () => [{ peerId: null, nome: S.nome, jogadorId: S.meuJogadorId, anfitriao: true },
     ...Object.entries(S.convidados).map(([peerId, c]) => ({ peerId, nome: c.nome, jogadorId: c.jogadorId }))];
@@ -7945,17 +8026,28 @@ const APP3D = (() => {
       : (typeof RTCPeerConnection === 'undefined' || (location.hostname || '').endsWith('claude.ai') || location.hostname === '') ? h('p', { class: 'nota nota--erro', texto: 'Dentro do claude.ai o navegador bloqueia conexões diretas (WebRTC), então a sala online só funciona na versão publicada — abra o jogo pelo seu endereço na Vercel (ou o SUIT_3D.html do Dropbox).' }) : null;
 
     if (!REDE.online()) {
+      if (cfg.nomeOnline === undefined) { try { cfg.nomeOnline = localStorage.getItem('suit-nome-online') || ''; } catch (e) { cfg.nomeOnline = ''; } }
+      const nomeOk = () => {
+        const n = (cfg.nomeOnline || '').trim();
+        if (!n || /^voc[eê]$/i.test(n)) { atualiza({ erroNome: true }); return null; }
+        try { localStorage.setItem('suit-nome-online', n); } catch (e) { /* ignora */ }
+        cfg.erroNome = false; return n;
+      };
       return h('div', { class: 'cenario' }, h('div', { class: 'cenario-caixa' }, cab,
-        bloco('Seu nome',
-          h('div', { class: 'linha' }, h('input', { type: 'text', value: cfg.nomes[0], maxlength: '14', placeholder: 'Seu nome', oninput: (ev) => { cfg.nomes[0] = ev.target.value; } }))),
+        bloco('Seu nome (obrigatório)',
+          h('div', { class: 'linha' }, h('input', { type: 'text', value: cfg.nomeOnline, maxlength: '14', placeholder: 'Digite seu nome', autofocus: 'autofocus', 'aria-label': 'Seu nome',
+            estilo: cfg.erroNome ? { borderColor: '#E0474D' } : null,
+            oninput: (ev) => { cfg.nomeOnline = ev.target.value; } })),
+          cfg.erroNome ? h('p', { class: 'nota nota--erro', texto: 'Escreva o seu nome antes de criar ou entrar numa sala — é assim que os outros vão te ver na mesa.' })
+            : h('p', { class: 'nota', texto: 'É o nome que os outros jogadores vão ver na mesa.' })),
         h('div', { class: 'ops' },
           h('div', { class: 'bloco' }, h('h3', { texto: 'Criar uma sala' }),
             h('p', { class: 'nota', texto: 'Você recebe um código de 6 letras e manda para os amigos. A sua aba precisa ficar aberta: é ela que roda a partida.' }),
-            h('button', { type: 'button', class: 'primario largo', onclick: () => { REDE.criarSala((cfg.nomes[0] || '').trim() || 'Você'); store.notificar(); } }, 'Criar sala')),
+            h('button', { type: 'button', class: 'primario largo', onclick: () => { const n = nomeOk(); if (!n) return; REDE.criarSala(n); store.notificar(); } }, 'Criar sala')),
           h('div', { class: 'bloco' }, h('h3', { texto: 'Entrar numa sala' }),
             h('div', { class: 'linha' }, h('input', { type: 'text', class: 'codigo', value: cfg.codigo, maxlength: '9', placeholder: 'CÓDIGO', 'aria-label': 'Código da sala',
               oninput: (ev) => { cfg.codigo = ev.target.value.toUpperCase(); ev.target.value = cfg.codigo; } })),
-            h('button', { type: 'button', class: 'largo', onclick: () => { if ((cfg.codigo || '').trim().length < 4) { atualiza({}); return; } REDE.entrarNaSala(cfg.codigo, (cfg.nomes[0] || '').trim() || 'Convidado'); store.notificar(); } }, 'Entrar'))),
+            h('button', { type: 'button', class: 'largo', onclick: () => { if ((cfg.codigo || '').trim().length < 4) { atualiza({}); return; } const n = nomeOk(); if (!n) return; REDE.entrarNaSala(cfg.codigo, n); store.notificar(); } }, 'Entrar'))),
         erro,
         h('div', { class: 'acoes' }, voltar),
         h('p', { class: 'nota', texto: 'A conexão é direta entre os navegadores (WebRTC). Em algumas redes corporativas ela pode não fechar — nesse caso, um dos dois usa o 4G do celular.' })));
@@ -8049,14 +8141,25 @@ const APP3D = (() => {
     const humanoNaVez = j && !j.bot && possoAgir(s);
     const podePassar = humanoNaVez && s.fase === 'escritorio' && !s.pendente && !s.acaoExtra;
 
+    // Passar o mouse (ou tocar) num Critério abre a carta inteira: nome, regra e quando vale.
+    const cartaCrit = (id, i, visivel) => {
+      const c = CATALOGO.criterioPorId[id];
+      return h('span', { class: 'crit-carta', role: 'tooltip' },
+        h('small', { texto: `Critério do Sócio ${i + 1} de ${s.criterios.length}` }),
+        h('b', { texto: visivel ? c.nome : 'Critério virado' }),
+        h('p', { texto: visivel ? c.descricao : 'Fica virado até a avaliação final. Quem chega ao conhecimento 5 pode espiar um Critério em segredo.' }),
+        h('em', { texto: visivel ? 'Soma pontos na avaliação final do sócio, no fim do ano 6.' : 'Todos os jogadores são avaliados pelos mesmos Critérios.' }));
+    };
+    const alternarCrit = (ev) => { const el = ev.currentTarget; const ja = el.classList.contains('aberto');
+      document.querySelectorAll('.crit.aberto').forEach((x) => x.classList.remove('aberto')); if (!ja) el.classList.add('aberto'); };
     const criterios = s.criteriosOcultos && s.fase !== 'fim'
       ? s.criterios.map((id, i) => {
         const espiado = eu && (eu.espiados || []).includes(i);
-        return h('span', { class: 'crit' + (espiado ? ' crit--vi' : ' crit--oculto'),
-          title: espiado ? CATALOGO.criterioPorId[id].descricao : `Critério ${i + 1}, virado`,
-          texto: espiado ? CATALOGO.criterioPorId[id].nome : '?' });
+        return h('span', { class: 'crit' + (espiado ? ' crit--vi' : ' crit--oculto'), tabindex: '0', onclick: alternarCrit },
+          espiado ? CATALOGO.criterioPorId[id].nome : '?', cartaCrit(id, i, espiado));
       })
-      : s.criterios.map((id) => h('span', { class: 'crit', title: CATALOGO.criterioPorId[id].descricao, texto: CATALOGO.criterioPorId[id].nome }));
+      : s.criterios.map((id, i) => h('span', { class: 'crit', tabindex: '0', onclick: alternarCrit },
+        CATALOGO.criterioPorId[id].nome, cartaCrit(id, i, true)));
 
     const vistas = CENA3D.vistas(s);
     const topo = h('div', { class: 'hud-topo' },
@@ -8196,11 +8299,28 @@ const APP3D = (() => {
           ? `${j.nome}: escolha 1 processo e passe os outros 2 para a esquerda.`
           : `${j.nome}: escolha 1 dos 2 que chegaram. O que sobrar é descartado.` }),
         aviso,
+        // A escolha da Pauta depende da mesa: cliente da mesma área barateia o processo.
+        h('div', { class: 'pauta-mesa' },
+          h('div', null, h('h4', { texto: `Seus clientes (${j.clientes.length})` }),
+            j.clientes.length ? h('div', { class: 'fila' }, ...j.clientes.map((cl) => h('div', null,
+              h('img', { src: CENA3D.textura(cl.cartaId), alt: CATALOGO.porId[cl.cartaId].nome, title: `${CATALOGO.porId[cl.cartaId].nome} — ${CATALOGO.porId[cl.cartaId].area}, nível ${cl.nivel} (clique para ampliar)`,
+                onclick: () => store.atualizarVista({ lupa: cl.cartaId }) }),
+              h('small', { class: 'nv', texto: `${CATALOGO.porId[cl.cartaId].area} · nível ${cl.nivel}` }))))
+              : h('p', { class: 'vazio', texto: 'Nenhum cliente ainda.' })),
+          h('div', null, h('h4', { texto: `Seus processos em andamento (${j.carteira.length})` }),
+            j.carteira.length ? h('div', { class: 'fila' }, ...j.carteira.map((pc) => h('div', null,
+              h('img', { src: CENA3D.textura(pc.cartaId), alt: CATALOGO.porId[pc.cartaId].nome, title: `${CATALOGO.porId[pc.cartaId].nome} — prazo ${pc.cubos} (clique para ampliar)`,
+                onclick: () => store.atualizarVista({ lupa: pc.cartaId }) }),
+              h('small', { class: 'nv', texto: `${CATALOGO.porId[pc.cartaId].area} · prazo ${pc.cubos}` }))))
+              : h('p', { class: 'vazio', texto: 'Nenhum processo aberto.' }))),
         h('div', { class: 'pauta-cartas' }, ...mao.map((id) => {
           const c = CATALOGO.porId[id];
-          return h('button', { type: 'button', class: 'pauta-carta', title: c.nome,
+          const temCliente = j.clientes.some((cl) => CATALOGO.porId[cl.cartaId].area === c.area);
+          return h('button', { type: 'button', class: 'pauta-carta' + (temCliente ? ' combina' : ''), title: c.nome,
             onclick: () => store.despachar(ac.draftEscolher(j.id, id)) },
             h('img', { src: CENA3D.textura(id), alt: `${c.nome} — ${c.area}` }),
+            temCliente ? h('em', { class: 'pauta-selo', texto: `Você tem cliente de ${c.area}: −1 energia` })
+              : h('em', { class: 'pauta-selo pauta-selo--neutro', texto: `Sem cliente de ${c.area}` }),
             h('span', { texto: 'Ficar com esta' }));
         })),
         h('p', { class: 'pauta-nota', texto: 'O processo entra na sua mesa com os cubos de prazo. Cada Fechamento tira um; no zero, ele vence sem pagar.' })));
@@ -8418,8 +8538,14 @@ const APP3D = (() => {
       else REDE.avisar(jogadorId, 'Nada para desfazer.');
     });
     const receberEstado = (estado) => {
+      // O anfitrião reenvia o estado a cada redesenho; se nada mudou no jogo,
+      // não apaga o que o convidado está escolhendo num modal (ex.: clientes no Cafezinho).
+      const ant = store.estado;
+      const mesmoLance = !!ant && (ant.log || []).length === (estado.log || []).length
+        && JSON.stringify(ant.pendente || null) === JSON.stringify(estado.pendente || null) && ant.fase === estado.fase;
       store.estado = estado; store.historico = [];
-      store.vista.escolha = {}; store.vista.modal = null; store.vista.escolhaPeca = null; store.vista.erro = null; store.vista.confirmarNova = false;
+      if (!mesmoLance) { store.vista.escolha = {}; store.vista.modal = null; store.vista.escolhaPeca = null; store.vista.erro = null; }
+      store.vista.confirmarNova = false;
       const idx = estado.jogadores.findIndex((j) => j.id === REDE.meuJogadorId());
       CENA3D.definirMeuIdx(Math.max(0, idx));
       store.notificar();
