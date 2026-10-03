@@ -798,24 +798,24 @@ body { color: var(--fg3); font-family: var(--sans); }
 .painel-log, .log { z-index: 3; }
 
 /* ---------- a Pauta em cartas reais */
-.pauta3d { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 70px 16px 80px; background: rgba(15,22,19,.35); overflow: auto; pointer-events: none; }
+.pauta3d { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center; padding: 70px 16px 80px; background: rgba(15,22,19,.35); overflow: auto; pointer-events: none; }
 #hud > .pauta3d { pointer-events: none; }
 .pauta3d-caixa { pointer-events: auto; }
-.pauta3d-caixa { text-align: center; max-width: 1100px; width: 100%; }
+.pauta3d-caixa { text-align: center; max-width: 1240px; width: 100%; margin: auto; } /* margin:auto centra quando cabe e NÃO corta quando não cabe (v10, 03/10) */
 .pauta3d h2 { font: 700 .8rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--ouro3); margin: 0 0 .4rem; }
 .pauta-sub { color: var(--fg3); font-size: 1rem; margin: 0 0 1rem; }
 .pauta-aviso { color: #F1E3D0; background: rgba(90,58,46,.85); border-left: 3px solid var(--ouro3); display: inline-block; padding: .4rem .7rem; font-size: .8rem; border-radius: 0 4px 4px 0; margin: 0 0 1rem; }
 .pauta-cartas { display: flex; gap: clamp(12px, 2.5vw, 36px); justify-content: center; flex-wrap: wrap; }
 .pauta-carta { background: none; border: 0; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: .5rem;
-  width: clamp(150px, 22vw, 300px); transition: transform .15s; }
+  width: clamp(150px, min(22vw, 28vh), 300px); transition: transform .15s; }
 .pauta-carta img { width: 100%; border-radius: 10px; box-shadow: 0 14px 40px rgba(0,0,0,.6); border: 2px solid transparent; display: block; }
 .pauta-carta:hover, .pauta-carta:focus-visible { transform: translateY(-8px) scale(1.03); outline: none; }
 .pauta-carta:hover img, .pauta-carta:focus-visible img { border-color: var(--ouro3); }
-.pauta-mesa { width: fit-content; display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; margin: 0 auto 1rem; padding: .7rem .9rem; max-width: 1000px;
+.pauta-mesa { width: fit-content; display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; margin: 0 auto 1rem; padding: .6rem .9rem; max-width: 1240px;
   background: rgba(15,22,19,.78); border: 1px solid var(--linha3); border-radius: 8px; }
 .pauta-mesa h4 { font: 700 .62rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--ouro3); margin: 0 0 .45rem; text-align: left; }
 .pauta-mesa .fila { display: flex; gap: 8px; flex-wrap: wrap; }
-.pauta-mesa img { width: clamp(70px, 8vw, 110px); border-radius: 6px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,.5); cursor: zoom-in; }
+.pauta-mesa img { width: clamp(56px, min(7vw, 9.5vh), 100px); border-radius: 6px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,.5); cursor: zoom-in; }
 .pauta-mesa .vazio { font-size: .75rem; color: var(--mut3); }
 .pauta-mesa .nv { display: block; font-size: .6rem; color: var(--mut3); text-align: center; margin-top: 2px; }
 .pauta-selo { font: 600 .68rem var(--sans); padding: .3rem .6rem; border-radius: 4px; background: #C9A227; color: #1B1409; }
