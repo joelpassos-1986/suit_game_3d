@@ -9077,15 +9077,23 @@ const REDE = (() => {
   // microfone (se estiver ligado) e toca o que chega num <audio>. "Som" desligado silencia todos os áudios.
   function registrarChamada(call) {
     const outro = call.peer;
-    const antiga = S.voz.chamadas[outro]; if (antiga && antiga !== call) { try { antiga.close(); } catch (e) { /* ignora */ } }
+    const antiga = S.voz.chamadas[outro];
     S.voz.chamadas[outro] = call;
+    if (antiga && antiga !== call) { const fechar = () => { try { antiga.close(); } catch (e) { /* ignora */ } }; call.on('stream', fechar); setTimeout(fechar, 8000); }
     call.on('stream', (stream) => {
       let a = S.voz.audios[outro];
       if (!a) { a = document.createElement('audio'); a.autoplay = true; a.playsInline = true; a.style.display = 'none'; document.body.appendChild(a); S.voz.audios[outro] = a; }
-      a.srcObject = stream; a.muted = !S.voz.som; a.play && a.play().catch(() => {});
+      a.srcObject = stream; a.muted = !S.voz.som; a._call = call; a.play && a.play().catch(() => {});
       emitir('voz');
     });
-    call.on('close', () => { if (S.voz.chamadas[outro] === call) delete S.voz.chamadas[outro]; const a = S.voz.audios[outro]; if (a) { a.remove(); delete S.voz.audios[outro]; } emitir('voz'); });
+    // Quando a chamada é refeita (o outro ligou o microfone depois), a chamada velha fecha DEPOIS de a nova já
+    // estar tocando — o fechamento só pode apagar o áudio que é dele, senão quem ligou o microfone primeiro
+    // fica surdo (foi o que aconteceu no primeiro teste real, 03/10).
+    call.on('close', () => {
+      if (S.voz.chamadas[outro] === call) delete S.voz.chamadas[outro];
+      const a = S.voz.audios[outro]; if (a && a._call === call) { a.remove(); delete S.voz.audios[outro]; }
+      emitir('voz');
+    });
     call.on('error', () => emitir('voz'));
   }
   function ligarVozComNovos() {
