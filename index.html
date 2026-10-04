@@ -726,6 +726,9 @@ button.faixa-carta { cursor: zoom-in; }
 .chat-form { display: flex; gap: .4rem; padding: .5rem .7rem; border-top: 1px solid var(--linha); }
 .chat-form input { flex: 1; min-width: 0; }
 .chat-form .btn { padding: .4rem .7rem; }
+.vu { width: 100%; height: 6px; background: var(--linha); border-radius: 3px; overflow: hidden; margin-top: .3rem; flex-basis: 100%; }
+.vu i { display: block; height: 100%; width: 0; background: var(--perda); transition: width .08s linear; }
+.voz { flex-wrap: wrap; }
 
 /* SUIT 3D — por cima da folha 2D: a cena ocupa a tela, a interface flutua. */
 :root { --bg3: #0F1613; --fg3: #F3F1EA; --mut3: #B9C9C1; --ouro3: #C8A15A; --verde3: #1F5C46;
@@ -1003,6 +1006,9 @@ body { color: var(--fg3); font-family: var(--sans); }
 .chat-form input { flex: 1; min-width: 0; background: rgba(255,255,255,.08); color: var(--fg3); border: 1px solid var(--linha3); border-radius: 6px; padding: .5rem .6rem; font: .84rem var(--sans); }
 .chat-form .btn { padding: .4rem .7rem; }
 @media (max-width: 820px) { .chat { left: 8px; right: 8px; width: auto; top: calc(48px + env(safe-area-inset-top, 0px)); bottom: calc(64px + env(safe-area-inset-bottom, 0px)); z-index: 7; } }
+.vu { width: 100%; height: 6px; background: rgba(255,255,255,.12); border-radius: 3px; overflow: hidden; margin-top: .3rem; flex-basis: 100%; }
+.vu i { display: block; height: 100%; width: 0; background: #B03A3A; transition: width .08s linear; }
+.voz { flex-wrap: wrap; }
 
 </style>
 </head>
@@ -9108,6 +9114,11 @@ const REDE = (() => {
     try {
       if (!v.stream) v.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }, video: false });
       for (const tr of v.stream.getAudioTracks()) tr.enabled = true;
+      // medidor: mostra na tela se o microfone está captando mesmo (diagnóstico do teste real de 03/10)
+      try {
+        if (!v.ctx) { const AC = window.AudioContext || window.webkitAudioContext; v.ctx = new AC(); v.analisador = v.ctx.createAnalyser(); v.analisador.fftSize = 512; v.ctx.createMediaStreamSource(v.stream).connect(v.analisador); }
+        if (v.ctx.state === 'suspended') v.ctx.resume();
+      } catch (e) { /* sem medidor */ }
       v.mic = true;
       // chamadas já abertas (recebidas sem microfone) precisam ser refeitas com o nosso áudio
       for (const [id, call] of Object.entries(v.chamadas)) { if (!call.localStream || !call.localStream.getAudioTracks().length) { try { call.close(); } catch (e) { /* ignora */ } delete v.chamadas[id]; } }
@@ -9124,6 +9135,7 @@ const REDE = (() => {
     for (const c of Object.values(v.chamadas)) { try { c.close(); } catch (e) { /* ignora */ } }
     for (const a of Object.values(v.audios)) a.remove();
     if (v.stream) for (const tr of v.stream.getTracks()) tr.stop();
+    if (v.ctx) { try { v.ctx.close(); } catch (e) { /* ignora */ } }
     S.voz = { mic: false, som: true, stream: null, chamadas: {}, audios: {}, erro: null };
   }
   function pedirDesfazer() { if (S.anfitriao) S.anfitriao.enviar({ t: 'desfazer' }); }
@@ -9147,7 +9159,16 @@ const REDE = (() => {
   return {
     criarSala, entrarNaSala, sair, iniciarPartida, difundirEstado, enviarAcao, pedirDesfazer, avisar, listaSala,
     enviarChat, chat: () => S.chat, ligarMic, ligarSom,
-    voz: () => ({ mic: S.voz.mic, som: S.voz.som, erro: S.voz.erro, disponivel: !!(S.transporte && S.transporte.temVoz), ligados: Object.keys(S.voz.audios).length }),
+    voz: () => ({ mic: S.voz.mic, som: S.voz.som, erro: S.voz.erro, disponivel: !!(S.transporte && S.transporte.temVoz), ligados: Object.keys(S.voz.audios).length,
+      dispositivo: S.voz.stream ? (S.voz.stream.getAudioTracks()[0] || {}).label || '' : '',
+      mudo: S.voz.stream ? !!(S.voz.stream.getAudioTracks()[0] || {}).muted : false }),
+    /** Nível do microfone agora (0 a 1), para o medidor do bate-papo. */
+    nivelMic() {
+      const v = S.voz; if (!v.analisador || !v.mic) return 0;
+      const d = new Uint8Array(v.analisador.fftSize); v.analisador.getByteTimeDomainData(d);
+      let s = 0; for (let i = 0; i < d.length; i++) { const x = (d[i] - 128) / 128; s += x * x; }
+      return Math.min(1, Math.sqrt(s / d.length) * 4);
+    },
     ouvir(nome, fn) { S.ouvintes[nome] = fn; },
     online: () => !!S.papel,
     souAnfitriao: () => S.papel === 'anfitriao',
@@ -9306,6 +9327,14 @@ const ONLINE = (() => {
     ? '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>'
     : '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M3 3l18 18"/></svg>';
 
+  /** Barra que mostra o nível do seu microfone — se não mexer enquanto você fala, o problema é no microfone, não na sala. */
+  function medidorMic() {
+    const barra = h('div', { class: 'vu', title: 'Nível do seu microfone' }, h('i'));
+    const i = barra.firstChild; let vivo = true;
+    const tick = () => { if (!vivo || !barra.isConnected) { vivo = false; return; } const n = REDE.nivelMic(); i.style.width = Math.round(n * 100) + '%'; i.style.background = n > 0.05 ? '#2E9E6B' : '#B03A3A'; requestAnimationFrame(tick); };
+    setTimeout(tick, 50);
+    return barra;
+  }
   function painelChat(s) {
     const voz = REDE.voz();
     const msgs = REDE.chat();
@@ -9328,7 +9357,8 @@ const ONLINE = (() => {
         botaoVoz(voz.mic, ICONE_MIC, 'Microfone', () => { REDE.ligarMic(!voz.mic); }),
         botaoVoz(voz.som, ICONE_SOM, 'Som', () => { REDE.ligarSom(!voz.som); }),
         h('span', { class: 'voz-status', texto: voz.erro ? voz.erro : !voz.disponivel ? 'Voz: só na versão publicada (fora do claude.ai).'
-          : voz.mic ? `Microfone aberto · ${voz.ligados} na chamada` : 'Clique no microfone para falar com a mesa. Use fone para evitar eco.' })),
+          : voz.mic ? `Microfone aberto · ${voz.ligados} na chamada` + (voz.dispositivo ? ` · ${voz.dispositivo}` : '') + (voz.mudo ? ' · SEM SINAL (o sistema cortou o microfone)' : '') : 'Clique no microfone para falar com a mesa. Use fone para evitar eco.' }),
+        voz.mic ? medidorMic() : null),
       lista,
       h('form', { class: 'chat-form', onsubmit: (ev) => { ev.preventDefault(); enviar(input); } }, input,
         h('button', { type: 'submit', class: 'btn' }, 'Enviar')));
@@ -10028,6 +10058,14 @@ const APP3D = (() => {
   const ICONE_SOM = (on) => on
     ? '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>'
     : '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M3 3l18 18"/></svg>';
+  /** Barra que mostra o nível do seu microfone — se não mexer enquanto você fala, o problema é no microfone, não na sala. */
+  function medidorMic() {
+    const barra = h('div', { class: 'vu', title: 'Nível do seu microfone' }, h('i'));
+    const i = barra.firstChild; let vivo = true;
+    const tick = () => { if (!vivo || !barra.isConnected) { vivo = false; return; } const n = REDE.nivelMic(); i.style.width = Math.round(n * 100) + '%'; i.style.background = n > 0.05 ? '#2E9E6B' : '#B03A3A'; requestAnimationFrame(tick); };
+    setTimeout(tick, 50);
+    return barra;
+  }
   function painelChat(s) {
     const v = store.vista; const voz = REDE.voz();
     const msgs = REDE.chat();
@@ -10050,7 +10088,8 @@ const APP3D = (() => {
         botaoVoz(voz.mic, ICONE_MIC, 'Microfone', () => { REDE.ligarMic(!voz.mic); }),
         botaoVoz(voz.som, ICONE_SOM, 'Som', () => { REDE.ligarSom(!voz.som); }),
         h('span', { class: 'voz-status', texto: voz.erro ? voz.erro : !voz.disponivel ? 'Voz: só na versão publicada (fora do claude.ai).'
-          : voz.mic ? `Microfone aberto · ${voz.ligados} na chamada` : 'Clique no microfone para falar com a mesa. Use fone para evitar eco.' })),
+          : voz.mic ? `Microfone aberto · ${voz.ligados} na chamada` + (voz.dispositivo ? ` · ${voz.dispositivo}` : '') + (voz.mudo ? ' · SEM SINAL (o sistema cortou o microfone)' : '') : 'Clique no microfone para falar com a mesa. Use fone para evitar eco.' }),
+        voz.mic ? medidorMic() : null),
       lista,
       h('form', { class: 'chat-form', onsubmit: (ev) => { ev.preventDefault(); enviar(input); } }, input,
         h('button', { type: 'submit', class: 'btn' }, 'Enviar')));
