@@ -8420,24 +8420,31 @@ const CENA3D = (() => {
     const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8;
     return (S.tampos.__ano = t);
   }
-  /** A balança da justiça: base redonda, coluna, travessão e dois pratos. */
-  function balanca() {
+  /** O martelo do juiz (marcador de primeiro jogador): bloco de madeira redondo e o martelo dourado deitado sobre ele. */
+  function marteloJuiz() {
     const g = new THREE.Group();
-    const metal = new THREE.MeshStandardMaterial({ color: 0xDDE1E6, roughness: 0.3, metalness: 0.5 });
+    const ouro = new THREE.MeshStandardMaterial({ color: 0xC8A15A, roughness: 0.3, metalness: 0.65, emissive: 0x2A1C04, emissiveIntensity: 0.25 });
+    const ouroEsc = new THREE.MeshStandardMaterial({ color: 0x9C7A3C, roughness: 0.35, metalness: 0.6 });
     const escuro = new THREE.MeshStandardMaterial({ color: 0x1B2622, roughness: 0.55, metalness: 0.2 });
-    const add = (geo, mat, x, y, z, rz = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.z = rz; m.castShadow = true; m.receiveShadow = true; g.add(m); return m; };
-    add(new THREE.CylinderGeometry(1.7, 1.85, 0.45, 48), escuro, 0, 0.225, 0);
-    add(new THREE.CylinderGeometry(1.15, 1.3, 0.3, 40), metal, 0, 0.6, 0);
-    add(new THREE.CylinderGeometry(0.16, 0.2, 3.6, 16), metal, 0, 2.5, 0);
-    add(new THREE.SphereGeometry(0.32, 20, 14), metal, 0, 4.42, 0);
-    add(new THREE.BoxGeometry(3.6, 0.16, 0.18), metal, 0, 4.05, 0);
-    for (const sx of [-1, 1]) {
-      const px = sx * 1.7;
-      for (const dz of [-1, 1]) add(new THREE.CylinderGeometry(0.03, 0.03, 1.72, 6), metal, px, 3.2, dz * 0.27).rotation.x = -dz * 0.33;
-      const prato = add(new THREE.SphereGeometry(0.62, 28, 10, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), metal, px, 2.5, 0);
-      prato.scale.y = 0.45;
+    const add = (pai, geo, mat, x, y, z) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; pai.add(m); return m; };
+    // a base (o bloco onde o martelo bate)
+    add(g, new THREE.CylinderGeometry(1.7, 1.85, 0.45, 48), escuro, 0, 0.225, 0);
+    add(g, new THREE.CylinderGeometry(1.3, 1.4, 0.28, 44), ouro, 0, 0.59, 0);
+    // o martelo: cabeça atravessada (eixo z), cabo para +x, apoiado na base e com a ponta do cabo na mesa
+    const m = new THREE.Group();
+    const cab = add(m, new THREE.CylinderGeometry(0.55, 0.55, 2.3, 32), ouro, 0, 0, 0); cab.rotation.x = Math.PI / 2;
+    for (const s of [-1, 1]) {
+      add(m, new THREE.CylinderGeometry(0.64, 0.64, 0.2, 32), ouroEsc, 0, 0, s * 0.62).rotation.x = Math.PI / 2;
+      add(m, new THREE.CylinderGeometry(0.62, 0.62, 0.16, 32), ouro, 0, 0, s * 1.15).rotation.x = Math.PI / 2;
+      add(m, new THREE.CylinderGeometry(0.48, 0.62, 0.1, 32), ouro, 0, 0, s * 1.28).rotation.x = Math.PI / 2;
     }
-    g.userData.tipo = 'balanca';
+    add(m, new THREE.CylinderGeometry(0.3, 0.3, 0.3, 20), ouroEsc, 0.65, 0, 0).rotation.z = Math.PI / 2;
+    add(m, new THREE.CylinderGeometry(0.2, 0.24, 3.4, 20), ouro, 2.45, 0, 0).rotation.z = Math.PI / 2;
+    add(m, new THREE.CylinderGeometry(0.27, 0.27, 0.22, 20), ouroEsc, 3.7, 0, 0).rotation.z = Math.PI / 2;
+    add(m, new THREE.SphereGeometry(0.3, 20, 14), ouro, 4.0, 0, 0);
+    m.position.set(-0.55, 1.28, 0.35); m.rotation.z = -0.24; m.rotation.y = 0.35;
+    g.add(m);
+    g.userData.tipo = 'martelo';
     return g;
   }
   function ficha() {
@@ -8645,9 +8652,9 @@ const CENA3D = (() => {
         for (let k = 0; k < uns; k++) { const m = moeda(1); m.position.set(-18.6, 0.11 + k * 0.22, 15.4); m.rotation.y = k * 0.5; J.dinamico.add(m); }
       }
       { const e = etiqueta('$' + j.dinheiro + (j.divida ? ' −' + j.divida : ''), cor); e.position.set(-18.6, 2.4, 18.6); J.dinamico.add(e); }
-      // marcador de primeiro jogador: a balança da justiça, à esquerda da mesa de quem começa o ano
+      // marcador de primeiro jogador: o martelo do juiz, à esquerda da mesa de quem começa o ano
       if (s.jogadores[s.primeiroJogador] && s.jogadores[s.primeiroJogador].id === j.id && s.jogadores.length > 1) {
-        const b = balanca(); b.position.set(-19.5, 0, -15.2); b.rotation.y = 0.5; b.scale.setScalar(1.3); J.dinamico.add(b);
+        const b = marteloJuiz(); b.position.set(-19.5, 0, -15.2); b.rotation.y = 0.5; b.scale.setScalar(1.3); J.dinamico.add(b);
       }
       // reserva de cubinhos de prazo
       for (let i = 0; i < 6; i++) { const q = cubo(cor, S.geo.cubinho); q.position.set(-17.4 + Math.floor(i / 3) * 0.95, 0.3, -13.4 + (i % 3) * 0.95); J.dinamico.add(q); }
